@@ -1,0 +1,396 @@
+--Ejemplos WHERE---------------------------------
+
+--operadores <, <=, >, >=, =.
+select first_name, salary
+from employees
+where salary < 3000;
+
+--between 
+select first_name, salary
+from employees
+where salary between 2500 and 3000;
+
+--alternativa between (and)
+select first_name, salary
+from employees
+where salary>=2500
+and salary<=3000;
+
+--in
+select first_name, salary
+from employees
+where salary in (2500, 2700, 3000);
+
+--alternativa in (or)
+select first_name, salary
+from employees
+where salary=2500 
+or salary=2700
+or salary=3000;
+
+--like
+select first_name, salary
+from employees
+where first_name like 'J_';
+
+--El % indica que es cualquier longitud de caracteres. 
+--Y el  la barra baja "_" indica que es solo un caracter.
+
+
+select first_name, salary
+from employees
+where first_name like '%e%'
+and first_name not like 'E%';
+
+--Este ejemplo del like, es para que busque palabras que empiecen con una letra diferente de e, 
+--pero que si que tiene una e entre medio de la palabra.
+
+
+----------------------------------------------------
+
+--order
+select first_name, salary * 0.75 new_salary
+from employees
+order by first_name asc, new_salary;
+
+-- order por posicion
+select first_name, salary * 0.75 new_salary
+from employees
+order by 1;
+
+select *
+from employees
+order by hire_date;
+desc employees;
+
+
+--Es un ejemplo de orden con desc decimos que sea de orden descendente.
+ Y con asc, que sea de orden ascendente.
+
+--Ejemplo con alias:  new_salary. El alias si es solo una palabra no hay que ponerlo entre comillas.
+ Y el as es opcional.
+
+select first_name, salary * 0.75 new_salary
+from employees
+order by first_name desc, new_salary;
+
+-- ordenar por posición
+
+-- sustitucion
+select last_name, salary
+from employees
+where last_name = 'Ozer';
+
+select last_name, salary
+from employees
+where last_name = &apellido;
+
+select last_name, salary
+from employees
+where last_name = '/&apellido';
+
+select last_name, salary
+from employees
+where salary = &salario;
+
+select last_name, salary, &&salario * 0.75 nuevo_salario
+from employees
+where salary = &salario;
+
+select last_name, salary
+from employees
+where last_name = &&nombre
+or first_name = &nombre;
+
+
+define nombre = 'Grant'
+
+select last_name, salary
+from employees
+where last_name = '&nombre';
+
+
+
+-- funciones linea----------------------------------------------------------------------
+
+-- lower
+select last_name, upper(last_name)
+from employees
+where upper(last_name) = 'URMAN';
+
+-- concat
+select concat(first_name, last_name)
+from employees;
+
+select concat(first_name, 
+	concat(' ', last_name))
+from employees;
+
+select concat(first_name, 
+	concat(' ', 
+		concat(upper(last_name),' F')))
+from employees;
+
+--substr
+select last_name, substr(last_name, 3, 4)
+from employees;
+
+select last_name, substr(last_name, 25, 4)
+from employees;
+
+--length
+select last_name, length(last_name)
+from employees;
+
+--instr
+select last_name, instr(last_name, 'a')
+from employees;
+
+select last_name, lower(last_name), 
+	instr(lower(last_name), 'a')
+from employees;
+
+select last_name, upper(last_name), 
+	instr(upper(last_name), 'A')
+from employees;
+
+select last_name, upper(last_name)
+from employees
+where instr(lower(last_name),'a')=3;
+
+-- replace
+select last_name, replace(last_name, 'a', 'e')
+from employees;
+
+select last_name, replace(lower(last_name), 'a', 'e')
+from employees;
+
+select last_name, initcap(replace(lower(last_name), 'a', 'e'))
+from employees;
+
+-- trim
+select last_name, trim ('a' from last_name)
+from employees;
+
+-- round
+select round(27.187,2), round(27.187,0), round(27.187,-1)
+from dual;
+
+-- trunc
+select trunc(27.187,2), trunc(27.187,0), trunc(27.187,-1)
+from dual;
+
+
+
+
+-- fechas-------------------------------------------------------------------------------------------
+
+select sysdate
+from dual;
+
+select sysdate, sysdate + 7
+from dual;
+
+select months_between ('01/01/1970', sysdate)
+from dual;
+
+select sysdate, add_months(sysdate, 3)
+from dual;
+
+select sysdate, sysdate + (3*30)
+from dual;
+
+select sysdate, next_day(sysdate, 'LUNES')
+from dual;
+
+select round(sysdate+15, 'month'), trunc(sysdate+15,'month')
+from dual;
+
+-- conversiones
+
+-- conve fechas
+
+select sysdate, to_char(sysdate, 'YYYY')
+from dual;
+
+select sysdate, to_char(sysdate, 'YY')
+from dual;
+
+select sysdate, to_char(sysdate, 'YEAR')
+from dual;
+
+select sysdate, to_char(sysdate, 'MM')
+from dual;
+
+select sysdate, to_char(sysdate, 'MON')
+from dual;
+
+select sysdate, to_char(sysdate, 'MONTH')
+from dual;
+
+select sysdate, to_char(sysdate, 'DD')
+from dual;
+
+select sysdate, to_char(sysdate, 'DY')
+from dual;
+
+select sysdate, to_char(sysdate, 'DAY')
+from dual;
+
+select hire_date, to_char(hire_date,'DD MON YY'), to_char(hire_date,'Day Month Year')
+from employees;
+
+-- conv numeros
+select first_name, salary, to_char(salary,'999,990.00') sueldo
+from employees;
+
+select first_name, salary, replace(to_char(salary,'999,990.00'), ',', '.') sueldo
+from employees;
+
+-- conv caracter-num
+select concat('55  ',' pepe'), concat(to_number('55  ', '9990'), 'pepe')
+from dual;
+
+-- conv car-fech
+select '10 Abril 16', to_date('10 Abril 16','DD Mon YYYY')
+from dual;
+
+select '10 Abril 16', to_date('10 Abril 16')
+from dual;
+
+select '10 07 16', to_date('10 07 16')
+from dual;
+
+
+
+-- nulos--------------------------------------------------------------------------------------
+select last_name, commission_pct, commission_pct * 0.2
+from employees;
+
+select last_name, commission_pct, nvl(commission_pct * 0.2, 0)
+from employees;
+
+select last_name, commission_pct, nvl2(commission_pct, 'No Nulo', 'Nulo')
+from employees;
+
+select last_name, first_name, length(last_name) l_l, length(first_name) l_f, 
+	nullif(length(last_name), length(first_name)) comparativa
+from employees;
+
+select last_name, department_id, commission_pct,
+	coalesce(to_char(department_id), to_char(commission_pct),'Sin departamento ni comision') control
+from employees
+where last_name = 'Grant'
+order by last_name;
+
+select last_name, salary, decode(salary, 
+	7000, 'Cobra algo',
+	2500, 'Cobar poco',
+	to_char(salary)) new_salary
+from employees
+order by salary;
+
+
+
+-- AGRUPACIONES --
+------------------
+
+-- funciones agrupadas sin where
+select sum(salary), avg (salary), min(salary), max(salary)
+from employees
+
+-- agrupadas con where
+select sum(salary), avg (salary), min(salary), max(salary)
+from employees
+where lower(first_name) like 'a%';
+
+-- agrupacion no considera valores nulos
+select avg(commission_pct)
+from employees;
+
+-- agrupacion especificando tratamiento de valores nulos
+select avg(nvl(commission_pct,0))
+from employees;
+
+select nvl(commission_pct,0)
+from employees
+order by nvl(commission_pct,0);
+
+-- minimos y maximos de fechas
+select min(hire_date), max(hire_date)
+from employees;
+
+-- minimos y maximos de cadenas de carácteres
+select min(first_name), max(first_name)
+from employees;
+
+-- COUNT
+select department_id, first_name
+from employees;
+
+select count(first_name)
+from employees
+where department_id = 50;
+
+--cuenta solo los valores no nulos
+select count(commission_pct)
+from employees
+where department_id = 50;
+
+--contar tratando los valores nulos
+select count(nvl(commission_pct,0))
+from employees
+where department_id = 50;
+
+select department_id, first_name, commission_pct
+from employees
+where department_id = 50;
+
+-- funcion contar especificando campo clave (sin nulos)
+select count(employee_id)
+from employees
+where department_id = 50;
+
+-- anidacion con distinct del count
+select count(distinct(department_id))
+from employees;
+
+select count(department_id)
+from employees;
+
+select count(*)
+from employees;
+
+
+-- GROUP BY
+
+-- estandard
+select department_id, count(employee_id)
+from employees
+group by department_id
+order by department_id;
+
+-- sin columna en el select de la parte agrupada
+select count(employee_id)
+from employees
+group by department_id
+order by department_id;
+
+-- con múltiples columnas agrupadas
+select department_id, job_id, count(employee_id)
+from employees
+group by department_id, job_id
+order by department_id, job_id;
+
+
+-- HAVING
+select department_id, count(employee_id)
+from employees
+group by department_id
+having count(employee_id) > 10
+order by department_id;
+
+select department_id, avg(commission_pct)
+from employees
+group by department_id
+having avg(commission_pct) > 0.2;
