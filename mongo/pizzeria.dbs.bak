@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="pizzeria" id="Project-ce7" database="MongoDb" >
+	<schema name="pizzeria" >
+		<table name="cliente" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="email" type="string" jt="12" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="dirección" type="string" jt="12" />
+			<column name="registro" type="date" jt="91" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="comanda" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="hora" type="timestamp" jt="93" />
+			<column name="email_C" type="string" jt="12" />
+			<column name="email_tienda" type="string" jt="12" />
+			<column name="cantidad_prod" type="int" jt="4" />
+			<column name="precio" type="double" jt="8" />
+			<column name="reparto" type="enum" jt="12" >
+				<enumeration><![CDATA["SI","NO"]]></enumeration>
+			</column>
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="comanda_detalle" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="codigo_com" type="int" jt="4" />
+			<column name="codigo_prod" type="int" jt="4" />
+			<column name="precio" type="double" jt="8" />
+			<column name="hora" type="timestamp" jt="93" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="pizza_cat" prior="pi" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="descipción" type="string" jt="12" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="producto" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="categoria" type="enum" jt="12" >
+				<enumeration><![CDATA["bebida","hamburguesa","pizza"]]></enumeration>
+			</column>
+			<column name="cat_pizza" type="int" jt="4" />
+			<column name="descripción" type="string" jt="12" />
+			<column name="imagen" type="binData" jt="2004" />
+			<column name="precio" type="double" jt="8" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="tienda" prior="tiendas" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="email" type="objectId" jt="-8" mandatory="y" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="dirección" type="string" jt="12" />
+			<column name="registro" type="date" jt="91" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="trabajador" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nif" type="string" jt="12" />
+			<column name="dirección" type="string" jt="12" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="puesto" type="string" jt="12" />
+			<column name="email_tienda" type="string" jt="12" />
+			<column name="teléfono" type="int" jt="4" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-505" show_relation="columns" >
+		<entity schema="pizzeria" name="cliente" color="C1D8EE" x="64" y="80" />
+		<entity schema="pizzeria" name="comanda" color="C1D8EE" x="768" y="208" />
+		<entity schema="pizzeria" name="comanda_detalle" color="C1D8EE" x="576" y="416" />
+		<entity schema="pizzeria" name="pizza_cat" color="C1D8EE" x="560" y="48" />
+		<entity schema="pizzeria" name="producto" color="C1D8EE" x="384" y="176" />
+		<entity schema="pizzeria" name="tienda" color="3986C1" x="208" y="64" />
+		<entity schema="pizzeria" name="trabajador" color="C1D8EE" x="48" y="336" />
+	</layout>
+	<layout name="tiendas" id="Layout-13f8" confirmed="y" show_relation="columns" >
+		<entity schema="pizzeria" name="tienda" color="3986C1" x="48" y="48" />
+		<script name="tiendas" id="Editor-98c" language="SQL" >
+			<string><![CDATA[pizzeria.tiendas.find()]]></string>
+		</script>
+	</layout>
+</project>

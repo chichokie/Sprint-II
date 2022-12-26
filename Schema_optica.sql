@@ -6,7 +6,8 @@ CREATE TABLE proveedor (
   nif VARCHAR(9) PRIMARY KEY,
   direccion VARCHAR(100) NOT NULL,
   nombre VARCHAR(100) NOT NULL,
-  telefono INT
+  telefono INT,
+  fax INT
 );
 
 CREATE TABLE clientes (

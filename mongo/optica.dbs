@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="optica" id="Project-e5b" database="MongoDb" >
+	<schema name="optica" >
+		<table name="cliente" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nombre" type="regex" jt="12" mandatory="y" />
+			<column name="email" type="string" jt="12" mandatory="y" />
+			<column name="direccion" type="regex" jt="12" />
+			<column name="telefono" type="int" jt="4" />
+			<column name="registro" type="date" jt="91" />
+			<column name="recomendado" type="string" jt="12" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_cliente_cliente" virtual="y" to_schema="optica" to_table="cliente" >
+				<fk_column name="_id" pk="recomendado" />
+			</fk>
+		</table>
+		<table name="gafas" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="codigo" type="int" jt="4" mandatory="y" />
+			<column name="marca" type="string" jt="12" mandatory="y" />
+			<column name="email_cliente" type="string" jt="12" />
+			<column name="graduacion_D" type="int" jt="4" />
+			<column name="graduacion_I" type="int" jt="4" />
+			<column name="precio" type="int" jt="4" />
+			<column name="tipo_montura" type="enum" jt="12" >
+				<enumeration><![CDATA[flotante, pasta, metalica]]></enumeration>
+			</column>
+			<column name="color_vd" type="string" jt="12" />
+			<column name="color_vi" type="string" jt="12" />
+			<column name="empleado" type="string" jt="12" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_gafas_marca" virtual="y" to_schema="optica" to_table="marca" >
+				<fk_column name="marca" pk="nombre" />
+			</fk>
+			<fk name="fk_gafas_cliente" virtual="y" to_schema="optica" to_table="cliente" >
+				<fk_column name="email_cliente" pk="email" />
+			</fk>
+		</table>
+		<table name="marca" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nombre" type="string" jt="12" mandatory="y" />
+			<column name="nif" type="string" jt="12" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_marca_proveedor" virtual="y" to_schema="optica" to_table="proveedor" >
+				<fk_column name="nif" pk="nif" />
+			</fk>
+		</table>
+		<table name="proveedor" prior="PROVEEDOR" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nif" type="int" jt="4" mandatory="y" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="direccion" type="regex" jt="12" />
+			<column name="telefono" type="int" jt="4" />
+			<column name="fax" type="int" jt="4" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-198e" show_relation="columns" >
+		<entity schema="optica" name="cliente" color="C1D8EE" x="240" y="80" />
+		<entity schema="optica" name="gafas" color="C1D8EE" x="48" y="48" />
+		<entity schema="optica" name="marca" color="C1D8EE" x="320" y="320" />
+		<entity schema="optica" name="proveedor" color="C1D8EE" x="80" y="448" />
+	</layout>
+</project>

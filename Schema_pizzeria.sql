@@ -18,8 +18,6 @@ CREATE TABLE trabajador (
   FOREIGN KEY (email_tienda) REFERENCES tienda(email)
 );
 
-
-
 CREATE TABLE cliente (
   email VARCHAR(30) PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL,
