@@ -20,8 +20,13 @@ CREATE TABLE trabajador (
 
 CREATE TABLE cliente (
   email VARCHAR(30) PRIMARY KEY,
-  nombre VARCHAR(100) NOT NULL,
+  nombre VARCHAR(50) NOT NULL,
+  apellidos VARCHAR(50) NOT NULL,
   direccion VARCHAR(100) NOT NULL,
+  localidad VARCHAR(30),
+  provincia VARCHAR(20),
+  codigoPostal INT,
+  telefono INT,
   registro DATE
 );
 CREATE TABLE pizza_cat (
@@ -47,6 +52,7 @@ CREATE TABLE comanda (
   cantidad_p INT NOT NULL,
   precio DOUBLE NOT NULL,
   reparto ENUM("SI","NO"),
+  horaReparto DATETIME,
   FOREIGN KEY (email_C) REFERENCES cliente(email),
   FOREIGN KEY (email_tienda) REFERENCES tienda(email)
 );

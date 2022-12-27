@@ -5,7 +5,9 @@ USE optica;
 CREATE TABLE proveedor (
   nif VARCHAR(9) PRIMARY KEY,
   direccion VARCHAR(100) NOT NULL,
-  nombre VARCHAR(100) NOT NULL,
+  codigoPostal INT,
+  pais VARCHAR(20),
+  nombre VARCHAR(30) NOT NULL,
   telefono INT,
   fax INT
 );
@@ -25,10 +27,10 @@ CREATE TABLE marca (
 
 CREATE TABLE gafas (
   codigo INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  marca VARCHAR(30),
+  marca VARCHAR(30) NOT NULL,
   email_C VARCHAR(30),
-  graduacionD INT NOT NULL,
-  graduacionI INT NOT NULL,
+  graduacionD DOUBLE NOT NULL,
+  graduacionI DOUBLE NOT NULL,
   precio DOUBLE NOT NULL,
   tipoMontura ENUM ("flotante","pasta","metalica"),
   colorVd VARCHAR(20),
