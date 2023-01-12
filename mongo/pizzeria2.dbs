@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="pizzeria" id="Project-ce7" database="MongoDb" >
+	<schema name="pizzeria" >
+		<table name="cliente" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="email" type="string" jt="12" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="dirección" type="string" jt="12" />
+			<column name="registro" type="date" jt="91" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="comanda" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="hora" type="timestamp" jt="93" />
+			<column name="email_C" type="string" jt="12" />
+			<column name="email_tienda" type="string" jt="12" />
+			<column name="cantidad_prod" type="int" jt="4" />
+			<column name="precio" type="double" jt="8" />
+			<column name="reparto" type="enum" jt="12" >
+				<enumeration><![CDATA["SI","NO"]]></enumeration>
+			</column>
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_comanda_cliente" virtual="y" to_schema="pizzeria" to_table="cliente" >
+				<fk_column name="email_C" pk="_id" />
+			</fk>
+			<fk name="fk_comanda_tienda" virtual="y" to_schema="pizzeria" to_table="tienda" >
+				<fk_column name="email_tienda" pk="_id" />
+			</fk>
+		</table>
+		<table name="comanda_detalle" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="codigo_com" type="int" jt="4" />
+			<column name="codigo_prod" type="int" jt="4" />
+			<column name="precio" type="double" jt="8" />
+			<column name="hora" type="timestamp" jt="93" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_comanda_detalle_comanda" virtual="y" to_schema="pizzeria" to_table="comanda" >
+				<fk_column name="codigo_com" pk="_id" />
+			</fk>
+			<fk name="fk_comanda_detalle_producto" virtual="y" to_schema="pizzeria" to_table="producto" >
+				<fk_column name="codigo_prod" pk="_id" />
+			</fk>
+		</table>
+		<table name="pizza_cat" prior="pi" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="descipción" type="string" jt="12" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="producto" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="categoria" type="enum" jt="12" >
+				<enumeration><![CDATA["bebida","hamburguesa","pizza"]]></enumeration>
+			</column>
+			<column name="cat_pizza" type="int" jt="4" />
+			<column name="descripción" type="string" jt="12" />
+			<column name="imagen" type="binData" jt="2004" />
+			<column name="precio" type="double" jt="8" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_producto_pizza_cat" virtual="y" to_schema="pizzeria" to_table="pizza_cat" >
+				<fk_column name="cat_pizza" pk="_id" />
+			</fk>
+		</table>
+		<table name="tienda" prior="tiendas" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="email" type="string" jt="12" mandatory="y" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="dirección" type="string" jt="12" />
+			<column name="registro" type="date" jt="91" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+		</table>
+		<table name="trabajador" prior="Collection" >
+			<column name="_id" type="objectId" jt="-8" mandatory="y" />
+			<column name="nif" type="string" jt="12" />
+			<column name="dirección" type="string" jt="12" />
+			<column name="nombre" type="string" jt="12" />
+			<column name="puesto" type="string" jt="12" />
+			<column name="email_tienda" type="string" jt="12" />
+			<column name="teléfono" type="int" jt="4" />
+			<index name="_id_" unique="PRIMARY_KEY" >
+				<column name="_id" />
+			</index>
+			<fk name="fk_trabajador_tienda" virtual="y" to_schema="pizzeria" to_table="tienda" >
+				<fk_column name="email_tienda" pk="_id" />
+			</fk>
+		</table>
+	</schema>
+	<connector name="MongoDb" database="MongoDb" driver_class="com.wisecoders.dbschema.mongodb.JdbcDriver" driver_jar="mongojdbc4.8.jar" driver_desc="No Authentication" host="localhost" port="27017" instance="pizzeria" user="admin" useSystemProxy="false" />
+	<layout name="Default Layout" id="Layout-505" show_relation="columns" >
+		<entity schema="pizzeria" name="cliente" color="C1D8EE" x="240" y="144" />
+		<entity schema="pizzeria" name="comanda" color="C1D8EE" x="768" y="208" />
+		<entity schema="pizzeria" name="comanda_detalle" color="C1D8EE" x="384" y="48" />
+		<entity schema="pizzeria" name="pizza_cat" color="C1D8EE" x="304" y="448" />
+		<entity schema="pizzeria" name="producto" color="C1D8EE" x="528" y="432" />
+		<entity schema="pizzeria" name="tienda" color="3986C1" x="240" y="288" />
+		<entity schema="pizzeria" name="trabajador" color="C1D8EE" x="48" y="336" />
+		<script name="Skema_pizzeria.sql" id="Editor-1b84" language="SQL" confirmed="y" file="file:/C:/Users/xixo/Desktop/BBDD/Sprint%202/mongo/Skema_pizzeria.sql" />
+	</layout>
+	<layout name="tiendas" id="Layout-13f8" confirmed="y" show_relation="columns" >
+		<entity schema="pizzeria" name="tienda" color="3986C1" x="48" y="48" />
+		<script name="tiendas" id="Editor-98c" language="SQL" >
+			<string><![CDATA[pizzeria.tiendas.find()]]></string>
+		</script>
+	</layout>
+</project>
