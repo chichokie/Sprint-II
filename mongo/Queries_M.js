@@ -2,7 +2,7 @@ db.restaurant.find().limit(100)
 db.restaurant.find({},{"name":1,"borough":1,"cuisine:":1}).limit(2)
 db.restaurant.find({},{"restaurant_id":1,"name":1,"borough":1,"cuisine":1,"_id":0}).limit(2)
 db.restaurant.find({},{"restaurant_id":1,"name":1,"borough":1,"address.zipcode":1,"_id":0}).limit(2)
-db.restaurant.find({"borough":"Bronx"}).limit(20)
+db.restaurant.find({"borough":"Bronx"})
 db.restaurant.find({"borough":"Bronx"}).limit(5)
 db.restaurant.find({"borough":"Bronx"}).skip(5).limit(2)
 db.restaurant.find({"grades.score":{$gt:90}}).limit(2)
@@ -14,7 +14,24 @@ db.restaurant.find({$and:[{"cuisine":{$ne:'American '}},{"grades.grade":'A'},{"b
 db.restaurant.find({name:{$regex:'Wil'}},{"name":1,"borough":1,"cuisine":1}).limit(2)
 db.restaurant.find({name:{$regex:'.*ces$'}},{"name":1,"borough":1,"cuisine":1}).limit(2)
 db.restaurant.find({name:{$regex:'.*Reg'}},{"name":1,"borough":1,"cuisine":1}).limit(2)
-db.restaurant.find({$and:[{$or:[{"cuisine":{$in:['American ','Chinese']}}},{"borugh":{$in:'Bronx'}}]}).limit(3)
+Xdb.restaurant.find({$and:[{cuisine:['American ','Chinese']},{borugh:'Bronx'}]}).limit(3)
+db.restaurant.find({$or:{borough:'Bronx','Brooklyn','Queens','Staten Island'}},{"restaurant_id":1,"name":1,"borough":1,"cuisine":1,"_id":0}).limit(2)
+db.restaurant.find({$nor:{borough:'Bronx','Brooklyn','Queens','Staten Island'}},{"restaurant_id":1,"name":1,"borough":1,"cuisine":1,"_id":0}).limit(2)
+db.restaurant.find({"grades.score":{$lt:10}},{"restaurant_id":1,"name":1,"borough":1,"cuisine":1,"grades.score":1,"_id":0}).limit(5)
+No entiendo lo del marisco.  a que atributo pertenece?
+
+
+
+db.restaurant.find().sort({name:1}).limit(3)
+db.restaurant.find().sort({name:-1})
+db.restaurant.find().sort({cuisine:1,borough:-1})
+
+
+
+db.restaurant.find({name:{$regex:'.*mon'}},{"name":1,"borough":1,"cuisine":1})
+
+
+
 
 
 
