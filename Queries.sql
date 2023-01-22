@@ -49,8 +49,8 @@ select  apellido1, apellido2, nombre  from persona where (tipo = "alumno" and te
 select * from persona where fecha_nacimiento like "1999%";
 select apellido1, apellido2, nombre  from persona where (tipo = "profesor" and telefono is null and nif like "%K");
 select nombre from asignatura where (id_grado = 7 and curso = 3 and cuatrimestre = 1);
-select p.apellido1, p.apellido2, p.nombre, d.nombre from persona p, departamento d where p.id in(select id from departamento where id in (select id_departamento from profesor))order by apellido1, apellido2, p.nombre DESC;
-select a.nombre, c.anyo_inicio, c.anyo_fin from asignatura a, curso_escolar c where a.id in(select id from curso_escolar where id in(select id from persona where nif="26902806M" )); 
+select p.apellido1, p.apellido2, p.nombre, d.nombre from persona p, departamento d where p.id in(select id_profesor from profesor where id_departamento=d.id) order by apellido1, apellido2, p.nombre DESC;
+select a.nombre, c.anyo_inicio, c.anyo_fin from asignatura a, curso_escolar c where a.id in(select id_asignatura from alumno_se_matricula_asignatura where id_alumno in(select id from persona where nif="26902806M" )); 
 select nombre from departamento where id in(select id_departamento from profesor where id_profesor in( select id_profesor from asignatura where id_grado in( select id from grado where nombre ='Grado en Ingeniería Informática (Plan 2015)')));
 select nombre from persona where id in(select id_alumno from alumno_se_matricula_asignatura where id_curso_escolar in(select id from curso_escolar where anyo_inicio = 2018 and anyo_fin = 2019)); 
 --------------------------JOINS-----------------------------------------------------------------;
@@ -83,7 +83,7 @@ select p.id_profesor from profesor p, asignatura a where id_departamento IS NOT 
 select nombre, cast(precio as INT) from producto;
 select nombre, precio decimal(11,0) from producto;
 select id_profesor from profesor where id_profesor not in(select id_profesor from asignatura);
-select * from persona;
+select * from asignatura;
 select d.nombre, count(d.id) from profesor p, departamento d where p.id_departamento in(select id_departamento from profesor where d.id=id_departamento) or d.id not in(select id_departamento from profesor where id=id_departamento) group by d.id;
 
 
