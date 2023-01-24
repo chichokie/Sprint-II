@@ -54,16 +54,19 @@ select a.nombre, c.anyo_inicio, c.anyo_fin from asignatura a, curso_escolar c wh
 select nombre from departamento where id in(select id_departamento from profesor where id_profesor in( select id_profesor from asignatura where id_grado in( select id from grado where nombre ='Grado en Ingeniería Informática (Plan 2015)')));
 select nombre from persona where id in(select id_alumno from alumno_se_matricula_asignatura where id_curso_escolar in(select id from curso_escolar where anyo_inicio = 2018 and anyo_fin = 2019)); 
 --------------------------JOINS-----------------------------------------------------------------;
-select p.nombre, apellido1, apellido2, d.nombre from departamento d left join  persona p on d.id=p.id_departamento;
-select p.nombre, apellido1, apellido2, d.nombre from departamento d, profesor p2, persona p where tipo="profesor" left join departamento d on d.id=p2.id_departamento ;
+select p.nombre, p.apellido1, p.apellido2, d.nombre from departamento d, persona p right join  profesor p2 on d.id = p2.id_departamento;
+select p.nombre from  persona p inner join profesor p2 on p.id=p2.id_profesor and p2.id_departamento=NULL;
+select d.nombre from departamento d left join profesor p on d.id=p.id_departamento where d.id not in( select id_departamento from profesor);  
 
-select p.nombre, p2.id_profesor from persona p right join profesor p2 on p.id=p2.id_profesor where p.id in( select id_profesor from profesor where id_departamento="null");  
-select p.nombre from persona p where tipo="profesor" UNION select id_departamento from profesor left join departamento on id=id_departamento;
-select p.nombre, p2.id_departamento from persona p right join profesor p2 on p.id=p2.id_profesor UNION select p.nombre, p2.id_departamento from persona p RIGHT join profesor p2 on p.id=p2.id_profesor; 
+select persona.nombre from persona left join profesor on persona.id = profesor.id_profesor where profesor.id_profesor not in(select id_profesor from asignatura);
+
+xselect a.nombre from asignatura a  left join profesor p on p.id_profesor not in( select a.id_profesor from asignatura);
+xselect p.nombre from persona p where tipo="profesor" UNION select id_departamento from profesor left join departamento on id=id_departamento;
+xselect p.nombre, p2.id_departamento from persona p right join profesor p2 on p.id=p2.id_profesor UNION select p.nombre, p2.id_departamento from persona p RIGHT join profesor p2 on p.id=p2.id_profesor; 
 
 and p2.id_departamento=NULL;
-
-
+right join asignatura on asignatura.id_profesor is null;
+where p2.id_profesor not in( select id_profesor from asignatura);
 
 ------------------------------------RESUM---------------------------------------------------------------;
 select count(id) from persona where tipo = "alumno";
@@ -83,7 +86,7 @@ select p.id_profesor from profesor p, asignatura a where id_departamento IS NOT 
 select nombre, cast(precio as INT) from producto;
 select nombre, precio decimal(11,0) from producto;
 select id_profesor from profesor where id_profesor not in(select id_profesor from asignatura);
-select * from asignatura;
+select * from persona;
 select d.nombre, count(d.id) from profesor p, departamento d where p.id_departamento in(select id_departamento from profesor where d.id=id_departamento) or d.id not in(select id_departamento from profesor where id=id_departamento) group by d.id;
 
 
