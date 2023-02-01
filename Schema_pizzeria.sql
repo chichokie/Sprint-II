@@ -12,7 +12,7 @@ CREATE TABLE trabajador (
   nif INT UNSIGNED PRIMARY KEY,
   direccion VARCHAR(100) NOT NULL,
   nombre VARCHAR(100) NOT NULL,
-  puesto ENUM("C","R"),
+  reparto ENUM("S","N"),
   telefono INT,
   email_tienda VARCHAR(30),
   FOREIGN KEY (email_tienda) REFERENCES tienda(email)
@@ -49,7 +49,7 @@ CREATE TABLE comanda (
   hora DATETIME,
   email_C VARCHAR(30),
   email_tienda VARCHAR(30),
-  cantidad_p INT NOT NULL,
+  cantidad_total INT NOT NULL,
   precio DOUBLE NOT NULL,
   reparto ENUM("SI","NO"),
   horaReparto DATETIME,
@@ -62,6 +62,7 @@ CREATE TABLE comanda_detalle (
   cod_com INT UNSIGNED,
   cod_prod INT UNSIGNED,
   hora DATETIME,
+  cantidad INT NOT NULL,
   precio DOUBLE NOT NULL,
   FOREIGN KEY (cod_com) REFERENCES comanda(codigo),
   FOREIGN KEY (cod_prod) REFERENCES producto(codigo)
