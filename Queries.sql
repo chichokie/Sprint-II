@@ -21,13 +21,23 @@ select nombre from producto where codigo_fabricante=2;
 select p.nombre,p.precio,f.nombre from producto p,fabricante f;
 select p.nombre,p.precio,f.nombre from producto p,fabricante f order by precio DESC;
 select p.nombre,p.codigo,f.nombre,f.codigo  from producto p,fabricante f;
+select p.nombre,p.precio,f.nombre  from producto p,fabricante f where p.codigo_fabricante = f.codigo and precio = (select min(precio) from producto) ;
+select p.nombre,p.precio,f.nombre  from producto p,fabricante f where p.codigo_fabricante = f.codigo and precio = (select max(precio) from producto) ;
+select nombre from producto where codigo_fabricante=(select codigo from fabricante where nombre = "Lenovo");
+select nombre from producto where precio > 200 and codigo_fabricante=(select codigo from fabricante where nombre = "Crucial");
+select p.nombre from producto p, fabricante f  where (p.codigo_fabricante=f.codigo) and (f.nombre = "Asus" or f.nombre= "Seagate" or f.nombre="Hewlett-Packard")  ;
+select nombre from producto where codigo_fabricante in(select codigo from fabricante where nombre = "Asus" or nombre= "Hewlett-Packard" or nombre=  "Seagate");
+select nombre from producto where codigo_fabricante in(select codigo from fabricante where nombre LIKE "%e");
+select nombre from producto where codigo_fabricante in(select codigo from fabricante where nombre LIKE "%w%");
+select p.precio,p.nombre,f.nombre  from producto p,fabricante f where (p.codigo_fabricante = f.codigo and precio >= 180) order by p.precio desc, p.nombre asc;
 
 
-xselect codigo from fabricante INNER JOIN producto on producto.codigo_fabricante=fabricante.codigo;
+select f.codigo, f.nombre from fabricante f,producto p where f.codigo not in(select codigo_fabricante from producto) group by f.nombre;
+select f.codigo, f.nombre from fabricante f INNER JOIN producto p on p.codigo_fabricante!=f.codigo;
 
 
-
-
+select * from  fabricante;
+select * from  producto;
 
 
 
