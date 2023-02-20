@@ -51,7 +51,6 @@ select * from producto;
 
 
 
-
 ---------------------------------UNIVERSIDAD-------------------------------------------------------------;
 
 select apellido1, apellido2, nombre  from persona where (tipo = "alumno") order by apellido1, apellido2, nombre;
@@ -60,14 +59,16 @@ select * from persona where fecha_nacimiento like "1999%";
 select apellido1, apellido2, nombre  from persona where (tipo = "profesor" and telefono is null and nif like "%K");
 select nombre from asignatura where (id_grado = 7 and curso = 3 and cuatrimestre = 1);
 select p.apellido1, p.apellido2, p.nombre, d.nombre from persona p, departamento d where p.id in(select id_profesor from profesor where id_departamento=d.id) order by apellido1, apellido2, p.nombre DESC;
-select a.nombre, c.anyo_inicio, c.anyo_fin from asignatura a, curso_escolar c where a.id in(select id_asignatura from alumno_se_matricula_asignatura where id_alumno in(select id from persona where nif="26902806M" )); 
+select a.nombre, c.anyo_inicio, c.anyo_fin from asignatura a, curso_escolar c where c.id in(select id_curso_escolar from alumno_se_matricula_asignatura) and a.id in(select id_asignatura from alumno_se_matricula_asignatura  where id_alumno =(select id from persona where nif="26902806M" )) group by a.nombre; 
 select nombre from departamento where id in(select id_departamento from profesor where id_profesor in( select id_profesor from asignatura where id_grado in( select id from grado where nombre ='Grado en Ingeniería Informática (Plan 2015)')));
 select nombre from persona where id in(select id_alumno from alumno_se_matricula_asignatura where id_curso_escolar in(select id from curso_escolar where anyo_inicio = 2018 and anyo_fin = 2019)); 
 --------------------------JOINS-----------------------------------------------------------------;
 select p.nombre, p.apellido1, p.apellido2, d.nombre from departamento d, persona p right join  profesor p2 on d.id = p2.id_departamento;
 select p.nombre from  persona p inner join profesor p2 on p.id=p2.id_profesor and p2.id_departamento=NULL;
+3
 select d.nombre from departamento d left join profesor p on d.id=p.id_departamento where d.id not in( select id_departamento from profesor);  
-
+select d.nombre from departamento d left join profesor p on d.id=p.id_departamento where p.id_profesor is null;  
+-
 select persona.nombre from persona left join profesor on persona.id = profesor.id_profesor where profesor.id_profesor not in(select id_profesor from asignatura);
 
 xselect a.nombre from asignatura a  left join profesor p on p.id_profesor not in( select a.id_profesor from asignatura);
@@ -89,9 +90,15 @@ select g.nombre, a.tipo, count(a.creditos) from grado g inner join asignatura a 
 select c.anyo_inicio,count(distinct a.id_alumno) from curso_escolar c inner join alumno_se_matricula_asignatura a  on c.id=a.id_curso_escolar group by id_curso_escolar;
 select p.id,p.nombre,p.apellido1,p.apellido2, count(a.id) from persona p, asignatura a  where p.id=a.id_profesor group by id_profesor order by count(a.id);
 select * from persona where fecha_nacimiento =(select MAX(fecha_nacimiento) from persona where tipo="alumno");
-select p.id_profesor from profesor p, asignatura a where id_departamento IS NOT NULL AND p.id_profesor!=a.id_profesor group by id_profesor;
+select p.id_profesor from profesor p, asignatura a where (id_departamento IS NOT NULL AND p.id_profesor!=a.id_profesor) group by id_profesor;
+11
+select p.id_profesor from profesor p where (id_departamento IS NOT NULL AND p.id_profesor not in(select id_profesor from asignatura));
+select p.id_profesor from profesor p where p.id_profesor in(select id_profesor from asignatura);pk?
+id_departamento IS NOT NULL AND
 ---------------------------------------------------------------------------------------------------------------;
-
+SELECT DISTINCT pe.nombre, pe.apellido1, pe.apellido2 FROM departamento dp left JOIN profesor pr ON dp.id = pr.id_departamento left JOIN asignatura asi ON pr.id_profesor = asi.id_profesor LEFT JOIN persona pe ON pr.id_profesor = pe.id WHERE (asi.nombre IS NULL AND id_departamento IS NOT NULL) ORDER BY pe.nombre;
+SELECT asi.nombre, ce.anyo_inicio, ce.anyo_fin FROM persona pe INNER JOIN alumno_se_matricula_asignatura am ON am.id_alumno = pe.id INNER JOIN asignatura asi ON asi.id = am.id_asignatura INNER JOIN curso_escolar ce ON ce.id = am.id_curso_escolar WHERE pe.nif = '26902806M';
+SELECT dp.nombre, pr.id_profesor FROM departamento dp LEFT JOIN profesor pr ON dp.id = pr.id_departamento WHERE pr.id_profesor IS NULL ORDER BY dp.nombre;
 "select nombre, precio decimal(11,0) from producto;" "select nombre,precio cast(precio as int,5) from producto;";
 select nombre, cast(precio as INT) from producto;
 select nombre, precio decimal(11,0) from producto;
